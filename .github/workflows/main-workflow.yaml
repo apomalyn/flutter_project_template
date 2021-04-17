@@ -1,4 +1,4 @@
-name: Tag validation
+name: Main workflow
 on:
   push:
     branches:
