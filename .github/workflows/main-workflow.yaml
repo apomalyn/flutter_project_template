@@ -26,7 +26,7 @@ jobs:
       - uses: jungwinter/split@v1
         id: split
         with:
-          msg: steps.pubspecVersion.outputs.version
+          msg: ${{ steps.pubspecVersion.outputs.version }}
           seperator: '+'
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
