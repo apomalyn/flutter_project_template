@@ -13,19 +13,26 @@ jobs:
   tagValidation:
     name: Tag validation
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.split.outputs._0 }}
     steps:
       - uses: actions/checkout@v2
       - name: Get the version from the pubspec
         id: pubspecVersion
-        uses: @cumulusds@v0.0.0
+        uses: CumulusDS/get-yaml-paths-action@v0.1.0
         with:
           file: pubspec.yaml
           version: version
+      - uses: jungwinter/split@v1
+        id: split
+        with:
+          msg: steps.pubspecVersion.outputs.version
+          separator: '+'
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
         with:
-          tag: ${{ steps.pubspecVersion.outputs.version }}
+          tag: ${{ steps.split.outputs._0 }}
       - if: steps.checkTag.output.exists == "true"
         run: |
           echo "${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version."
@@ -55,7 +62,7 @@ jobs:
 
   buildWorkflow:
     name: Build the application for
-    needs: validationWorkflow
+    needs: [validationWorkflow, tagValidation]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -69,3 +76,17 @@ jobs:
 
       - name: Build APK for Android
         run: flutter build apk
+
+      # TODO add ios build
+
+      - name: Create release
+        if: "${{ github.event_name == 'push' }}"
+        uses: marvinpinto/action-automatic-releases@latest
+        with:
+            repo_token: ${{ secrets.GITHUB_TOKEN }}
+            draft: true
+            automatic_release_tag: ${{ needs.tagValidation.outputs.version }}
+            title: v${{ needs.tagValidation.outputs.version }}
+            files: |
+              build/app/outputs/apk/release/app-release.apk
+
