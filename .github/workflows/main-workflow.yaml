@@ -31,7 +31,10 @@ jobs:
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.split.outputs._0 }}
       - if: ${{ steps.checkTag.output.exists == 'true' }}
         run: |
