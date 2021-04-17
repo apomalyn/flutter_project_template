@@ -33,7 +33,7 @@ jobs:
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
-      - if: steps.checkTag.output.exists == "true"
+      - if: ${{ steps.checkTag.output.exists == 'true' }}
         run: |
           echo "${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version."
           exit 1
