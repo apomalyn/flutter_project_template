@@ -9,6 +9,8 @@ on:
       - 'README.md'
       - '.github/**'
   pull_request:
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   tagValidation:
     name: Tag validation
@@ -31,10 +33,14 @@ jobs:
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag: ${{ steps.split.outputs._0 }}
+      - if: ${{ steps.checkTag.output.exists == 'true' && github.event_name == 'pull_request' }}
+        name: Post comment on PR
+        uses: thollander/actions-comment-pull-request@1.0.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: '${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version.'
       - if: ${{ steps.checkTag.output.exists == 'true' }}
         run: |
           echo "${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version."
@@ -43,6 +49,8 @@ jobs:
   validationWorkflow:
     name: Tests and checks
     runs-on: ubuntu-latest
+    env:
+      # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -66,6 +74,8 @@ jobs:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
     runs-on: ubuntu-latest
+    env:
+      # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
