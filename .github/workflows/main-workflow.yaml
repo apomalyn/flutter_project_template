@@ -35,13 +35,13 @@ jobs:
         id: checkTag
         with:
           tag: ${{ steps.split.outputs._0 }}
-      - if: ${{ steps.checkTag.output.exists == 'true' && github.event_name == 'pull_request' }}
+      - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
         name: Post comment on PR
         uses: thollander/actions-comment-pull-request@1.0.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: '${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version.'
-      - if: ${{ steps.checkTag.output.exists == 'true' }}
+      - if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
           echo "${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version."
           exit 1
