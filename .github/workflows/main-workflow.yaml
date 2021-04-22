@@ -49,7 +49,7 @@ jobs:
   validationWorkflow:
     name: Tests and checks
     runs-on: ubuntu-latest
-    env:
+#    env:
       # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
@@ -74,7 +74,7 @@ jobs:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
     runs-on: ubuntu-latest
-    env:
+#    env:
       # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
