@@ -40,10 +40,10 @@ jobs:
         uses: thollander/actions-comment-pull-request@1.0.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: '${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version.'
+          message: '${{ steps.split.outputs._0 }} already exists, please update the pubspec version.'
       - if: ${{ steps.checkTag.outputs.exists == 'true' }}
         run: |
-          echo "${{ steps.pubspecVersion.outputs.version }} already exists, please update the pubspec version."
+          echo "${{ steps.split.outputs._0 }} already exists, please update the pubspec version."
           exit 1
 
   validationWorkflow:
