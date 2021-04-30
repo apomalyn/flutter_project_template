@@ -89,8 +89,6 @@ jobs:
       - name: Build APK for Android
         run: flutter build apk
 
-      # TODO add ios build
-
       - name: Create release
         if: "${{ github.event_name == 'push' }}"
         uses: marvinpinto/action-automatic-releases@latest
@@ -102,3 +100,4 @@ jobs:
             files: |
               build/app/outputs/apk/release/app-release.apk
 
+  # TODO add ios build

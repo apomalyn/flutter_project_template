@@ -1,0 +1,15 @@
+on:
+  release:
+    types: [published, deleted]
+
+jobs:
+  # TODO start fastlane to publish the application on release published.
+  releaseDeleted:
+    name: Release is deleted, clean the repository
+    runs-on: ubuntu-latest
+#    if: "${{ github.event.type == 'deleted' }}"
+    steps:
+      - run: |
+          echo ${{ github.event }}
+
+  # TODO on release deleted delete the tag of the repository
