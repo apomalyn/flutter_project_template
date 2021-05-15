@@ -73,10 +73,12 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-      - id: git_commit
-        uses: zwaldowski/git-commit-action@v1
+      - uses: github-actions-x/commit@v2.8
         with:
-          commit_message: Add updated coverage.
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Update coverage file.'
+          force-add: 'true'
+          files: coverage/lcov.info
 
   buildWorkflow:
     name: Build the application for
