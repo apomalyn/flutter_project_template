@@ -66,9 +66,15 @@ jobs:
       - run: flutter analyze
 
       # Run the tests
-      - run: flutter test
+      - run: flutter test --coverage
 
-      # TODO add coverage and coverage badge in case of pushing on master
+      # Comment coverage report
+      - uses: romeovs/lcov-reporter-action@v0.2.16
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          lcov-file: ./coverage/lcov.info
+
+      # TODO commit coverage file and badge
 
   buildWorkflow:
     name: Build the application for
