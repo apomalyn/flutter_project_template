@@ -73,12 +73,16 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-      - uses: github-actions-x/commit@v2.8
+      - name: Commit files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "Update coverage file" -a
+      - name: Push changes
+        uses: ad-m/github-push-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Update coverage file.'
-          force-add: 'true'
-          files: coverage/lcov.info
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
 
   buildWorkflow:
     name: Build the application for
