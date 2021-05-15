@@ -73,7 +73,6 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-          lcov-base: https://raw.githubusercontent.com/apomalyn/flutter_project_template/main/coverage/lcov.base.info
       - id: git_commit
         uses: zwaldowski/git-commit-action@v1
         with:
