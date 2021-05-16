@@ -7,7 +7,6 @@ on:
       - '.gitignore'
       - '.metadata'
       - 'README.md'
-      - '.github/**'
   pull_request:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,6 +52,8 @@ jobs:
       # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -77,14 +78,13 @@ jobs:
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add coverage/lcov.infok
+          git add coverage/lcov.info
           git commit -m "Update coverage file" -a
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
+          branch: ${{ github.head_ref }}
   buildWorkflow:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
