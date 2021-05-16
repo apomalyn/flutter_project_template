@@ -78,7 +78,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add coverage/lcov.info
           git commit -m "Update coverage file" -a
-          git push origin ${{ github.head_ref }}
+          git push origin refs/heads/${{ github.head_ref }}
   buildWorkflow:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
