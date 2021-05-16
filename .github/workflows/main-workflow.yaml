@@ -52,6 +52,8 @@ jobs:
       # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-deph: 0 # Needed to push to refs
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -78,7 +80,11 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add coverage/lcov.info
           git commit -m "Update coverage file" -a
-          git push origin refs/heads/${{ github.head_ref }}:${{ github.head_ref }}
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
   buildWorkflow:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
