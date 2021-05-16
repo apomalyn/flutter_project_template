@@ -7,7 +7,6 @@ on:
       - '.gitignore'
       - '.metadata'
       - 'README.md'
-      - '.github/**'
   pull_request:
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -53,6 +52,8 @@ jobs:
       # TODO Put here the environment variables needed to build your application.
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
@@ -69,22 +70,32 @@ jobs:
       - run: flutter test --coverage
 
       # Comment coverage report
-      - uses: romeovs/lcov-reporter-action@v0.2.16
+      - name: Comment the coverage of the PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: romeovs/lcov-reporter-action@v0.2.21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-      - name: Commit files
+          lcov-base: ./coverage/lcov.base.info
+      - name: Commit coverage file
+        id: commit
+        if: ${{ github.event_name == 'pull' }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add coverage/lcov.infok
-          git commit -m "Update coverage file" -a
-      - name: Push changes
+          mv converage lcov.info lcov.base.info
+          git add coverage/lcov.base.info
+          if git status | grep coverage/lcov.base.info; then
+            git commit -m "Update coverage file" -a
+            echo "::set-output name=is_commit::true"
+          fi
+
+      - name: Push coverage changes.
+        if: ${{ github.event_name == 'pull' && steps.commit.is_commit}}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
-
+          branch: ${{ github.head_ref }}
   buildWorkflow:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
