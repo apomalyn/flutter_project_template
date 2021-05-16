@@ -76,15 +76,19 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-          lcov-base: ./coverage/lcov.info
+          lcov-base: ./coverage/lcov.base.info
       - name: Commit coverage file
+        id: commit
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add coverage/lcov.info
-          git commit -m "Update coverage file" -a
+          if git status | grep coverage/lcov.info; then
+            git commit -m "Update coverage file" -a
+          echo "::set-output name=is_commit::true
+          fi
       - name: Push coverage changes.
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request' && steps.commit.is_commit}}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
