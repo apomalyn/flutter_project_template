@@ -70,17 +70,21 @@ jobs:
       - run: flutter test --coverage
 
       # Comment coverage report
-      - uses: romeovs/lcov-reporter-action@v0.2.16
+      - name: Comment the coverage of the PR
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: romeovs/lcov-reporter-action@v0.2.16
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
-      - name: Commit files
+          lcov-base: ./coverage/lcov.info
+      - name: Commit coverage file
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add coverage/lcov.info
           git commit -m "Update coverage file" -a
-      - name: Push changes
+      - name: Push coverage changes.
+        if: ${{ github.event_name == 'pull_request' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
