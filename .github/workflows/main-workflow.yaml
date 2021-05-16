@@ -79,10 +79,11 @@ jobs:
           git add coverage/lcov.info
           git commit -m "Update coverage file" -a
       - name: Push changes
+        if: ${{ github.event_name == 'pull_request' }}
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          branch: ${{ github.head_ref }}
 
   buildWorkflow:
     name: Build the application for
