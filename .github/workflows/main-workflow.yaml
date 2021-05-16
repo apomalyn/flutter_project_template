@@ -78,13 +78,7 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add coverage/lcov.info
           git commit -m "Update coverage file" -a
-      - name: Push changes
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: refs/heads/${{ github.head_ref }}
-
+          git push origin ${{ github.head_ref }}
   buildWorkflow:
     name: Build the application for
     needs: [validationWorkflow, tagValidation]
