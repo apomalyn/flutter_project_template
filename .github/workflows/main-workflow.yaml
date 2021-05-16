@@ -53,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-deph: 0 # Needed to push to refs
+          fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v1
         with:
           java-version: '12.x'
