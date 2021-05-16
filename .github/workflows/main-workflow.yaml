@@ -72,7 +72,7 @@ jobs:
       # Comment coverage report
       - name: Comment the coverage of the PR
         if: ${{ github.event_name == 'pull_request' }}
-        uses: romeovs/lcov-reporter-action@v0.2.16
+        uses: romeovs/lcov-reporter-action@v0.2.21
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           lcov-file: ./coverage/lcov.info
@@ -85,7 +85,7 @@ jobs:
           git add coverage/lcov.info
           if git status | grep coverage/lcov.info; then
             git commit -m "Update coverage file" -a
-          echo "::set-output name=is_commit::true
+            echo "::set-output name=is_commit::true"
           fi
       - name: Push coverage changes.
         if: ${{ github.event_name == 'pull_request' && steps.commit.is_commit}}
