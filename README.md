@@ -2,18 +2,23 @@
 
 ![Version](https://img.shields.io/github/v/tag/apomalyn/flutter_project_template?label=Latest%20version)
 
-A template for Flutter project.
+This repository is a template of CI for Flutter project.
+
+## What this repo offer?
+
+TODO
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### Setup gist for the code coverage
 
-A few resources to get you started if this is your first Flutter project:
+TODO
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Using
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-s
+- [Split action](https://github.com/marketplace/actions/split-action) by JungWinter
+- [Tag exists action](https://github.com/marketplace/actions/tag-exists-action) by mukunku
+- [Flutter action](https://github.com/marketplace/actions/flutter-action) by subosito
+- [LCOV reporter action](https://github.com/marketplace/actions/code-coverage-report) by romeovs
+- [Dynamic badge action](https://github.com/marketplace/actions/dynamic-badges) by schneegans
+- [Automatic releases action](https://github.com/marketplace/actions/automatic-releases) by marvinpinto
