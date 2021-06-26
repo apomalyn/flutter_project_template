@@ -51,6 +51,8 @@ jobs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -87,7 +89,7 @@ jobs:
           mv coverage/lcov.info coverage/lcov.base.info
           git add test/*
           git status
-          git commit -m "Update golden files" -a
+          git commit -m "Update golden files"
           git push
 
       # Run the tests
