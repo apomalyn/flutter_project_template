@@ -30,6 +30,8 @@ jobs:
       - name: Validate that version doesn't exists
         uses: mukunku/tag-exists-action@v1.0.0
         id: checkTag
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag: ${{ steps.split.outputs._0 }}
       - if: ${{ steps.checkTag.outputs.exists == 'true' && github.event_name == 'pull_request' }}
@@ -85,7 +87,8 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           file_pattern: test/*
-          commit_user_name: "github-actions[bot]"
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
           commit_message: "Update golden files"
 
         # Run the tests
