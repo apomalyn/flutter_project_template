@@ -89,7 +89,7 @@ jobs:
 
       # Run the tests
       - run: flutter test --coverage
-        if: ${{ !contains(github.event.head_commit.message, "[CI UPDATE GOLDENS]") }}
+        if: ${{ !contains(github.event.head_commit.message, '[CI UPDATE GOLDENS]') }}
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
