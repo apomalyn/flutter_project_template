@@ -76,8 +76,8 @@ jobs:
       - name: Get code coverage
         id: coverage
         run: |
-          chmod +x ./scripts/ci_determine_code_coverage.sh
-          export COV="$(./scripts/ci_determine_code_coverage.sh coverage/lcov.info)"
+          chmod +x ./scripts/ci_determine_coverage_percentage.sh
+          export COV="$(./scripts/ci_determine_coverage_percentage.sh coverage/lcov.info)"
           echo "Coverage detected is: $COV"
           echo "::set-output name=percentage::$COV"
 
