@@ -33,6 +33,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await expectLater(find.byType(MyApp), matchesGoldenFile('golden_test_1.png'));
+    await expectLater(
+        find.byType(MyApp), matchesGoldenFile('golden_test_1.png'));
   });
 }
