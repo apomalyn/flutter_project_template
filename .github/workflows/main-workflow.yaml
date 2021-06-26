@@ -88,14 +88,7 @@ jobs:
           git add test/*
           git status
           git commit -m "Update golden files" -a
-          echo "::set-output name=is_committed::true"
-      - name: Push coverage changes.
-        if: ${{ steps.commit.outputs.is_committed == 'true'}}
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
-
+          git push
 
       # Run the tests
       - run: flutter test --coverage
