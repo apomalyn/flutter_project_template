@@ -8,8 +8,6 @@ on:
       - '.github/**'
       - 'README.md'
   pull_request:
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   tagValidation:
     name: Tag validation
@@ -53,7 +51,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: ${{ github.head_ref }}
-          token: ${{ secret.PAT }}
+          token: ${{ secrets.PAT }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
