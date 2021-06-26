@@ -133,6 +133,7 @@ jobs:
       #          lcov-base: ./coverage/lcov.base.info
 
       - name: Recover the repository name
+        if: ${{ github.event_name == 'push' }}
         uses: jungwinter/split@v1
         id: split
         with:
@@ -239,7 +240,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: ${{ matrix.target }}
-          path: ${{ github.workspace }}/notre_dame_${{ matrix.target }}.${{ matrix.asset_extension }}
+          path: ${{ github.workspace }}/${{ matrix.target }}.${{ matrix.asset_extension }}
 
   create-draft-release:
     name: Draft Github release
