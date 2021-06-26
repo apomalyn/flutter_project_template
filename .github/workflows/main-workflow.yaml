@@ -66,11 +66,11 @@ jobs:
       - run: flutter analyze
 
       - name: Update goldens
-        if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, "CI:UPDATE GOLDENS") }}
+        if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, "[CI UPDATE GOLDENS]") }}
         run: flutter test --coverage --update-goldens
       - name: Commit golden files
         id: commit
-        if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, "CI:UPDATE GOLDENS") }}
+        if: ${{ github.event_name == 'pull_request' && contains(github.event.head_commit.message, "[CI UPDATE GOLDENS]") }}
         run: |
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
