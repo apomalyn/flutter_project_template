@@ -51,6 +51,8 @@ jobs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
