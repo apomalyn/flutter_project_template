@@ -90,7 +90,7 @@ jobs:
           git add test/*
           git status
           git commit -m "Update golden files"
-          git push
+          git push origin HEAD:${{ github.ref }}
 
       # Run the tests
       - run: flutter test --coverage
