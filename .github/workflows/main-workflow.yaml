@@ -90,9 +90,15 @@ jobs:
           git add test/*
           git status
           git commit -m "Update golden files"
-          git push origin HEAD:${{ github.head_ref }}
+      - name: Push goldens
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
 
-      # Run the tests
+
+        # Run the tests
       - run: flutter test --coverage
         if: ${{ steps.check_run_goldens.outputs.update_goldens != 'true' }}
 
