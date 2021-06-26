@@ -27,4 +27,13 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+
+  testWidgets('Golden test', (WidgetTester tester) async {
+    await tester.pumpWidget(MyApp());
+
+    await tester.pumpAndSettle();
+
+    await expectLater(
+        find.byType(MyApp), matchesGoldenFile('golden_test_1.png'));
+  });
 }
