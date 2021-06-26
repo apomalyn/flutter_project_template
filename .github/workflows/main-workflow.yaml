@@ -51,6 +51,8 @@ jobs:
       coverage: ${{ steps.coverage.outputs.percentage }}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Needed to push to refs
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -65,8 +67,40 @@ jobs:
       - run: flutter format --set-exit-if-changed .
       - run: flutter analyze
 
-      # Run the tests
+      - name: "Check if needed to update goldens"
+        if: github.event_name == 'pull_request'
+        id: check_run_goldens
+        run: |
+          commit_msg=$(git log --format=%B -n 1 HEAD)
+
+          if [[ $commit_msg=$(git log --format=%B -n 1 HEAD) ]]; then
+            echo ::set-output name=update_goldens::true
+          fi
+
+      - name: Update goldens
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        run: flutter test --coverage --update-goldens
+      - name: Commit golden files
+        id: commit
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          mv coverage/lcov.info coverage/lcov.base.info
+          git add test/*
+          git status
+          git commit -m "Update golden files"
+      - name: Push goldens
+        if: ${{ steps.check_run_goldens.outputs.update_goldens == 'true' }}
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
+
+
+        # Run the tests
       - run: flutter test --coverage
+        if: ${{ steps.check_run_goldens.outputs.update_goldens != 'true' }}
 
       - name: Upload coverage file
         uses: actions/upload-artifact@v2
@@ -120,26 +154,26 @@ jobs:
           color: green
 
   #      Disable theses steps for now. Will enable them when we will think of a way to upload lcov.base.info somewhere
-  #      - name: Commit coverage file
-  #        id: commit
-  #        if: ${{ github.event_name == 'push' }}
-  #        run: |
-  #          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-  #          git config --local user.name "github-actions[bot]"
-  #          mv coverage/lcov.info coverage/lcov.base.info
-  #          git add coverage/lcov.base.info
-  #          git status
-  #          git status | grep -o 'coverage/lcov.base.info*'
-  #          if git status | grep -o 'coverage/lcov.base.info*'; then
-  #            git commit -m "Update coverage file" -a
-  #            echo "::set-output name=is_commit::true"
-  #          fi
-  #      - name: Push coverage changes.
-  #        if: ${{ github.event_name == 'push' && }}
-  #        uses: ad-m/github-push-action@master
-  #        with:
-  #          github_token: ${{ secrets.GITHUB_TOKEN }}
-  #          branch: ${{ github.head_ref }}
+#        - name: Commit coverage file
+#          id: commit
+#          if: ${{ github.event_name == 'push' }}
+#          run: |
+#            git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+#            git config --local user.name "github-actions[bot]"
+#            mv coverage/lcov.info coverage/lcov.base.info
+#            git add coverage/lcov.base.info
+#            git status
+#            git status | grep -o 'coverage/lcov.base.info*'
+#            if git status | grep -o 'coverage/lcov.base.info*'; then
+#              git commit -m "Update coverage file" -a
+#              echo "::set-output name=is_commit::true"
+#            fi
+#        - name: Push coverage changes.
+#          if: ${{ github.event_name == 'push' && }}
+#          uses: ad-m/github-push-action@master
+#          with:
+#            github_token: ${{ secrets.GITHUB_TOKEN }}
+#            branch: ${{ github.head_ref }}
 
   create-build:
     name: Create ${{ matrix.target }} build
@@ -180,7 +214,7 @@ jobs:
         run: |
           flutter pub get
           cd ios
-          rm Podfile.lock
+          rm -f Podfile.lock
           pod install --repo-update
           flutter clean
 
