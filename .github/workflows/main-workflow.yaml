@@ -201,17 +201,17 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - run: flutter doctor -v
-      - name: Install iOS dependencies
-        if: matrix.target == 'iOS'
-        run: |
-          flutter pub get
-#          Uncomment if you have a pod that need to be updated.
+#      Uncomment if you have a podfile
+#      - name: Install iOS dependencies
+#        if: matrix.target == 'iOS'
+#        run: |
+#          flutter pub get
 #          cd ios
 #          rm -f Podfile.lock
 #          pod install --repo-update
-          flutter clean
+#          flutter clean
 
-      # Get dependencies and decrypt needed files.
+      # Get dependencies.
       - run: flutter pub get
 
       # Build the application.
