@@ -1,7 +1,7 @@
 # flutter_project_template
 
 ![Version](https://img.shields.io/github/v/tag/apomalyn/flutter_project_template?label=Latest%20version)
-![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.github.com/apomalyn/63e992d7042dbac4db9abaecb78df0eb/raw/flutter_project_template_master_badge_coverage.json)
+![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/apomalyn/63e992d7042dbac4db9abaecb78df0eb/raw/2dd431e3f59a5217a8dd051dd0253b07ca824019/flutter_project_template_badge_coverage.json)
 
 This repository is a template of CI for Flutter project.
 
