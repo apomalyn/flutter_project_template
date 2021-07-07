@@ -28,7 +28,7 @@ Big thanks to _The Jared Wilcurt_ for the technique explained [here](https://dev
 3. Create a [developer token](https://github.com/settings/tokens) with the `gist` scope. Copy the token.
 4. Create a secret called `GIST_COVERAGE_BADGE_TOKEN` with the token just created at the previous step as value.
 5. Do not forget to copy `scripts/ci_determine_coverage_percentage.sh` in your repository.
-6. Add this badge to your README: `[![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.github.com/<YOUR_USERNAME>/<YOUR_GIST_ID>/raw/<REPOSITORY_NAME>_master_badge_coverage.json)]`
+6. Add this badge to your README: `[![Coverage Badge](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/<YOUR_USERNAME>/<YOUR_GIST_ID>/raw/<REPOSITORY_NAME>_master_badge_coverage.json)]`
 7. There you go! :smile:
 
 ### Commit goldens files
