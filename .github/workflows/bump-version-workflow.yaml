@@ -1,0 +1,25 @@
+name: Bump server version
+on:
+  pull_request:
+    paths-ignore:
+      - '.gitignore'
+      - 'README.md'
+    types:
+      - unlabeled
+      - labeled
+      - synchronize
+      - opened
+      - reopened
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Bump version
+        uses: apomalyn/bump-version-using-labels@1.0.1
+        with:
+          file_path: 'pubspec.yaml'
+          comment: true
